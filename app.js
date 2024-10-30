@@ -1,20 +1,11 @@
 const express = require('express');
+const cors = require('cors');
+const studentRoutes = require('./routes/students');
+
 const app = express();
-const PORT = 5000;
 
-// Middleware to parse JSON requests
+app.use(cors());
 app.use(express.json());
+app.use('/students', studentRoutes);
 
-// Sample route to fetch all student data
-app.get('/api/students', (req, res) => {
-  const students = [
-    { id: 100, name: 'Lydia Legan', classes: [{ classID: 'INFO 530', className: 'Systems Development' }] },
-    // Add more student data here...
-  ];
-  res.json(students);
-});
-
-// Server start
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+module.exports = app;
