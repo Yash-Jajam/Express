@@ -1,20 +1,23 @@
+// app.js
+
 const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+
 const app = express();
-const PORT = 5000;
 
-// Middleware to parse JSON requests
+app.use(logger('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Sample route to fetch all student data
-app.get('/api/students', (req, res) => {
-  const students = [
-    { id: 100, name: 'Lydia Legan', classes: [{ classID: 'INFO 530', className: 'Systems Development' }] },
-    // Add more student data here...
-  ];
-  res.json(students);
-});
+// Routes
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
-// Server start
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+module.exports = app;

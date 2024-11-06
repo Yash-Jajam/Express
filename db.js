@@ -1,11 +1,11 @@
 // db.js
-const mysql = require('mysql2');
 
-const pool = mysql.createPool({
-  host: 'localhost',      // MySQL host
-  user: 'root',   // MySQL username
-  password: 'password', // MySQL password
-  database: 'student_schedule'  // MySQL database name
-});
-
-module.exports = pool.promise();
+const conn_info = {
+    host: 'localhost',
+    user: 'root',
+    password: 'MySQL@123', // Ensure your MySQL password is correct
+    database: 'student_schedule', // Ensure this is the correct database name
+  };
+  
+  module.exports = { conn_info };
+  
