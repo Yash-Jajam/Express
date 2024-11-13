@@ -28,7 +28,30 @@ router.get('/', cors(corsOptions), function(req, res, next) {
 
   connection.query(query, [studentId], (e, r) => {
     if (!e) {
-      res.json(r[0]);  // Send the first result (single student-class data)
+      // If there are classes found for the student, collect them in an array
+      if (r.length > 0) {
+        const student = {
+          name: r[0].name,    // Student name (all classes will belong to this student)
+          email: r[0].email,  // Student email (same for all classes)
+          classes: []         // Initialize empty array for classes
+        };
+
+        // Loop through all results to add each class to the student's class list
+        r.forEach(row => {
+          student.classes.push({
+            class_name: row.class_name,
+            class_date: row.class_date,
+            class_time: row.class_time,
+            class_location: row.class_location,
+            syllabus: row.syllabus,
+            map: row.map
+          });
+        });
+
+        res.json(student); // Send the student data with all classes
+      } else {
+        res.json({ message: 'Student not found or no classes assigned.' });
+      }
     } else {
       next(e);  // Pass error to the error handler
     }
